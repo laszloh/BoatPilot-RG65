@@ -512,14 +512,14 @@ F 3 "" H 1750 6150 50  0001 C CNN
 	1    1750 6150
 	1    0    0    -1  
 $EndComp
-Text Label 12300 5950 0    50   ~ 0
+Text Label 12300 6900 0    50   ~ 0
 RC_SERVO1
 Wire Wire Line
-	12900 5950 12300 5950
-Text Label 12300 6900 0    50   ~ 0
+	12900 6900 12300 6900
+Text Label 12300 5950 0    50   ~ 0
 RC_SERVO2
 Wire Wire Line
-	12900 6900 12300 6900
+	12900 5950 12300 5950
 Text Label 12300 7850 0    50   ~ 0
 RC_SERVO3
 Wire Wire Line
@@ -716,11 +716,11 @@ Text Label 12300 7750 0    50   ~ 0
 SERVO3
 Wire Wire Line
 	12900 7750 12850 7750
-Text Label 12300 6800 0    50   ~ 0
+Text Label 12300 5850 0    50   ~ 0
 SERVO2
 Wire Wire Line
 	12900 6800 12850 6800
-Text Label 12300 5850 0    50   ~ 0
+Text Label 12300 6800 0    50   ~ 0
 SERVO1
 Wire Wire Line
 	12900 5850 12850 5850
@@ -933,8 +933,6 @@ F 3 "~" H 14450 4850 50  0001 C CNN
 	1    14450 4850
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	14250 4750 13950 4750
 $Comp
 L power:GND #PWR0166
 U 1 1 5EE5B9C7
@@ -950,19 +948,6 @@ Wire Wire Line
 	14250 4950 14150 4950
 Wire Wire Line
 	14150 4950 14150 5000
-$Comp
-L Device:R_Small R112
-U 1 1 5EE64F42
-P 13850 4750
-F 0 "R112" V 13950 4750 50  0000 C CNN
-F 1 "4.7k" V 13750 4750 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" H 13850 4750 50  0001 C CNN
-F 3 "~" H 13850 4750 50  0001 C CNN
-	1    13850 4750
-	0    -1   -1   0   
-$EndComp
-Wire Wire Line
-	13750 4750 12850 4750
 $Comp
 L SilentWorks:GY-91 U101
 U 1 1 5EA7E29B
@@ -1000,9 +985,8 @@ F 3 "" H 12850 5850 50  0001 C CNN
 	1    12850 5850
 	1    0    0    -1  
 $EndComp
-Connection ~ 12850 5850
 Wire Wire Line
-	12850 5850 12300 5850
+	12850 6800 12300 6800
 $Comp
 L SilentWorks:ICT-Point P134
 U 1 1 5E93D06E
@@ -1014,9 +998,8 @@ F 3 "" H 12850 6800 50  0001 C CNN
 	1    12850 6800
 	1    0    0    -1  
 $EndComp
-Connection ~ 12850 6800
 Wire Wire Line
-	12850 6800 12300 6800
+	12850 5850 12300 5850
 $Comp
 L SilentWorks:ICT-Point P135
 U 1 1 5E93D60F
@@ -1351,10 +1334,10 @@ Wire Wire Line
 	14100 7950 14250 7950
 Text Label 13150 4750 0    50   ~ 0
 FAILSAFE_EN
-Text Label 7050 6050 0    50   ~ 0
+Text Label 7050 6850 0    50   ~ 0
 WIND_PWM
 Wire Wire Line
-	7650 6050 7050 6050
+	7650 6850 7050 6850
 Wire Wire Line
 	9550 6050 8950 6050
 Text Label 9550 6050 2    50   ~ 0
@@ -1945,7 +1928,7 @@ F 3 "~" H 9750 6250 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	9850 6250 10300 6250
-NoConn ~ 7650 6850
+NoConn ~ 7650 6050
 $Comp
 L power:+5V #PWR0136
 U 1 1 5EF94E73
@@ -2611,4 +2594,8 @@ $EndComp
 Connection ~ 14400 1350
 Wire Wire Line
 	14400 1350 14400 1100
+Wire Wire Line
+	12850 4750 14250 4750
+Connection ~ 12850 6800
+Connection ~ 12850 5850
 $EndSCHEMATC
