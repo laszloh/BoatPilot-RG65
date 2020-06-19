@@ -36,5 +36,5 @@
 *.tsv
 *.xml
 # backup files
-*.*-bak
+*.*bak
 fp-info-cache
