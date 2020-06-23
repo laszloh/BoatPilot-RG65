@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:BoatPilot-cache
 EELAYER 30 0
 EELAYER END
 $Descr A3 16535 11693
@@ -1244,18 +1243,18 @@ Wire Wire Line
 	8950 6950 9550 6950
 Wire Wire Line
 	8950 6850 9550 6850
-Text Label 7050 7150 0    50   ~ 0
+Text Label 7050 7050 0    50   ~ 0
 SERVO3
 Wire Wire Line
-	7650 7150 7050 7150
+	7650 7050 7050 7050
 Text Label 7050 6350 0    50   ~ 0
 SERVO2
 Wire Wire Line
 	7650 6350 7050 6350
-Text Label 7050 7050 0    50   ~ 0
+Text Label 7050 7150 0    50   ~ 0
 SERVO1
 Wire Wire Line
-	7650 7050 7050 7050
+	7650 7150 7050 7150
 Text Label 9550 7050 2    50   ~ 0
 RC_IBUS
 Wire Wire Line
@@ -2572,4 +2571,6 @@ F 3 "" H 6700 6300 50  0001 C CNN
 	1    6700 6300
 	-1   0    0    -1  
 $EndComp
+NoConn ~ 7650 6450
+NoConn ~ 7650 6550
 $EndSCHEMATC
