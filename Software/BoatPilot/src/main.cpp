@@ -9,12 +9,21 @@
  * 
  */
 
+#include <stdint.h>
+
 #include <libopencm3/cm3/nvic.h>
+
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/gpio.h>
 #include <libopencm3/stm32/spi.h>
 #include <libopencm3/stm32/i2c.h>
 #include <libopencm3/stm32/timer.h>
+
+#include "systick.h"
+
+extern "C" {
+//    void tim2_isr(void);
+};
 
 typedef struct {
     int port;
@@ -49,10 +58,59 @@ static inline void gpio_setup(void) {
 }
 
 static inline void spi_setup(void) {
-    // enable peripherial clocks
+    // enable SPI1 as slave (communication channel to the NanoPI)
     rcc_periph_clock_enable(RCC_SPI1);
+
+
+    // enable SPI2 as master (for the 9-axis gyrro and the BMP)
     rcc_periph_clock_enable(RCC_SPI2);
 
+    // Configure GPIOB: SCK = PB13, MISO = PB14, MOSI = PB15
+    gpio_set_mode(GPIOB, GPIO_MODE_OUTPUT_50_MHZ, GPIO_CNF_OUTPUT_ALTFN_PUSHPULL, GPIO13 | GPIO15);
+    gpio_set_mode(GPIOB, GPIO_MODE_INPUT, GPIO_CNF_INPUT_FLOAT, GPIO14);
+
+    // We will be manually controlling the SS pin here, so set it as a normal output
+    gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_50_MHZ, GPIO_CNF_OUTPUT_PUSHPULL, GPIO8 | GPIO10);
+
+    // SS is active low, so pull it high for now
+    gpio_set(GPIOA, GPIO8 | GPIO10);
+
+    // Reset our peripheral
+    spi_reset(SPI2);
+
+    // Set main SPI settings:
+    // - The datasheet for the 74HC595 specifies a max frequency at 4.5V of
+    //   25MHz, but since we're running at 3.3V we'll instead use a 12MHz
+    //   clock, or 1/4 of our main clock speed.
+    // - Set the clock polarity to be zero at idle
+    // - Set the clock phase to trigger on the rising edge, as per datasheet
+    // - Set 8 bit transfer size
+    // - Send the most significant bit (MSB) first
+    spi_init_master(
+        SPI2,
+        SPI_CR1_BAUDRATE_FPCLK_DIV_4,
+        SPI_CR1_CPOL_CLK_TO_0_WHEN_IDLE,
+        SPI_CR1_CPHA_CLK_TRANSITION_1,
+        SPI_CR1_DFF_8BIT,
+        SPI_CR1_MSBFIRST
+    );
+
+    // Since we are manually managing the SS line, we need to move it to
+    // software control here.
+    spi_enable_software_slave_management(SPI2);
+
+    // We also need to set the value of NSS high, so that our SPI peripheral
+    // doesn't think it is itself in slave mode.
+    spi_set_nss_high(SPI2);
+
+    // The terminology around directionality can be a little confusing here -
+    // unidirectional mode means that this is the only chip initiating
+    // transfers, not that it will ignore any incoming data on the MISO pin.
+    // Enabling duplex is required to read data back however.
+    spi_set_unidirectional_mode(SPI2);
+
+    // Enable the peripheral
+    spi_enable(SPI2);
 }
 
 static inline void i2c_setup(void) {
@@ -101,9 +159,10 @@ int main(void) {
     spi_setup();
     i2c_setup();
     tim_setup();
+    systick_setup();
 
     while(1) {
-        ;
+        delayMs(500);
     }
 
     return 0;
