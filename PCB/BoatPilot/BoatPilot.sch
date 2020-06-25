@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:BoatPilot-cache
 EELAYER 30 0
 EELAYER END
 $Descr A3 16535 11693
@@ -1237,10 +1238,10 @@ Wire Wire Line
 	8950 6250 9650 6250
 Text Label 9550 6850 2    50   ~ 0
 ~CS_BMP280
-Text Label 9550 6950 2    50   ~ 0
+Text Label 9550 7050 2    50   ~ 0
 ~CS_MPU9250
 Wire Wire Line
-	8950 6950 9550 6950
+	8950 7050 9550 7050
 Wire Wire Line
 	8950 6850 9550 6850
 Text Label 7050 7050 0    50   ~ 0
@@ -1255,10 +1256,10 @@ Text Label 7050 7150 0    50   ~ 0
 SERVO1
 Wire Wire Line
 	7650 7150 7050 7150
-Text Label 9550 7050 2    50   ~ 0
+Text Label 9550 6950 2    50   ~ 0
 RC_IBUS
 Wire Wire Line
-	8950 7050 9550 7050
+	8950 6950 9550 6950
 $Comp
 L MCU_ST_STM32F1:STM32F103C8Tx U109
 U 1 1 5F51064E
