@@ -61,6 +61,34 @@ static inline void spi_setup(void) {
     // enable SPI1 as slave (communication channel to the NanoPI)
     rcc_periph_clock_enable(RCC_SPI1);
 
+    // Configure GPIOA: SCK = PA5, MISO = PA6, MOSI = PA7, NSS = PA4
+    gpio_set_mode(GPIOA, GPIO_MODE_INPUT, GPIO_CNF_INPUT_FLOAT, GPIO4 | GPIO5 | GPIO7);
+    gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_50_MHZ, GPIO_CNF_OUTPUT_ALTFN_PUSHPULL, GPIO6);
+
+    // reset peripherial
+    spi_reset(SPI1);
+
+    // set main SPI settings
+    spi_init_master(
+        SPI1,
+        SPI_CR1_BAUDRATE_FPCLK_DIV_4,
+        SPI_CR1_CPOL_CLK_TO_0_WHEN_IDLE,
+        SPI_CR1_CPHA_CLK_TRANSITION_1,
+        SPI_CR1_DFF_8BIT,
+        SPI_CR1_MSBFIRST
+    );
+
+    // set slave mode
+    spi_set_slave_mode(SPI1);
+
+    // anble HW chip select
+    spi_disable_software_slave_management(SPI1);
+
+    // enable unidirectional communication
+    spi_set_unidirectional_mode(SPI1);
+
+    // enable SPI module
+    spi_enable(SPI1);
 
     // enable SPI2 as master (for the 9-axis gyrro and the BMP)
     rcc_periph_clock_enable(RCC_SPI2);
