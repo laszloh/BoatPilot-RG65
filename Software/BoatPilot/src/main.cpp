@@ -20,19 +20,37 @@
 #include <libopencm3/stm32/timer.h>
 
 #include "systick.h"
+#include "servo.h"
 
 extern "C" {
 //    void tim2_isr(void);
 };
 
-typedef struct {
-    int port;
-    int pin;
-} gpio_t;
+#define SERVO_PORT  GPIOB
+#define SERVO1_PIN  GPIO10
+#define SERVO2_PIN  GPIO3
+#define SERVO3_PIN  GPIO11
 
-constexpr gpio_t servo2 = {GPIOB, GPIO3};
-constexpr gpio_t servo1 = {GPIOB, GPIO4};
-constexpr gpio_t servo3 = {GPIOB, GPIO5};
+#define ROTARY_PORT GPIOB
+#define ROTARY_PIN  GPIO8
+
+#define SPI2CS_PORT GPIOA
+#define BMP280_CS   GPIO8
+#define MPU9250_CS  GPIO10
+
+#define IBUS_PORT   GPIOA
+#define IBUS_PIN    GPIO9
+
+#define GPS_PORT    GPIOA
+#define GPSTX_PIN   GPIO2
+#define GPSRX_PIN   GPIO3
+
+#define I2C_PORT    GPIOB
+#define I2CSCL_PIN  GPIO6
+#define I2CSDA_PIN  GPIO7
+
+#define UBAT_PORT   GPIOA
+#define UBAT_PIN    GPIO0
 
 static inline void clock_setup(void)
 {
@@ -43,27 +61,46 @@ static inline void gpio_setup(void) {
     // enable peripherial clocks
     rcc_periph_clock_enable(RCC_GPIOA);
     rcc_periph_clock_enable(RCC_GPIOB);
+    rcc_periph_clock_enable(RCC_AFIO);
 
-    gpio_set_mode(servo1.port, GPIO_MODE_OUTPUT_50_MHZ,
-        GPIO_CNF_OUTPUT_PUSHPULL, servo1.pin);
-    gpio_clear(servo1.port, servo1.pin);
+    // Servo pins: SERVO1 = PB10, SERVO2 = PB3, SERVO3 = PB11
+    gpio_set_mode(SERVO_PORT, GPIO_MODE_OUTPUT_50_MHZ,
+        GPIO_CNF_OUTPUT_ALTFN_PUSHPULL, SERVO1_PIN | SERVO2_PIN | SERVO3_PIN);
+    gpio_primary_remap(0, AFIO_MAPR_TIM2_REMAP_FULL_REMAP);
+    gpio_clear(SERVO_PORT, SERVO1_PIN | SERVO2_PIN | SERVO3_PIN);
 
-    gpio_set_mode(servo2.port, GPIO_MODE_OUTPUT_50_MHZ,
-        GPIO_CNF_OUTPUT_PUSHPULL, servo2.pin);
-    gpio_clear(servo2.port, servo2.pin);
+    // PWM output of AS5600: ROTARY = PB8
+    gpio_set_mode(ROTARY_PORT, GPIO_MODE_INPUT, GPIO_CNF_INPUT_FLOAT, ROTARY_PIN);
 
-    gpio_set_mode(servo3.port, GPIO_MODE_OUTPUT_50_MHZ,
-        GPIO_CNF_OUTPUT_PUSHPULL, servo3.pin);
-    gpio_clear(servo3.port, servo3.pin);
+    // SPI1 pin setup: SCK = PA5, MISO = PA6, MOSI = PA7, NSS = PA4
+    gpio_set_mode(GPIOA, GPIO_MODE_INPUT, GPIO_CNF_INPUT_FLOAT, GPIO4 | GPIO5 | GPIO7);
+    gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_50_MHZ, GPIO_CNF_OUTPUT_ALTFN_PUSHPULL, GPIO6);
+
+    // SPI2 pin setup: SCK = PB13, MISO = PB14, MOSI = PB15
+    gpio_set_mode(GPIOB, GPIO_MODE_OUTPUT_50_MHZ, GPIO_CNF_OUTPUT_ALTFN_PUSHPULL, GPIO13 | GPIO15);
+    gpio_set_mode(GPIOB, GPIO_MODE_INPUT, GPIO_CNF_INPUT_FLOAT, GPIO14);
+
+    // manual control of the Slave-Selects: BMP280 = PA8, MPU9250 = PA10
+    gpio_set_mode(SPI2CS_PORT, GPIO_MODE_OUTPUT_50_MHZ, GPIO_CNF_OUTPUT_PUSHPULL, BMP280_CS | MPU9250_CS);
+
+    // half-duplex UART for IBUS: IBUS = PA9
+    gpio_set_mode(IBUS_PORT, GPIO_MODE_OUTPUT_50_MHZ, GPIO_CNF_OUTPUT_ALTFN_OPENDRAIN, IBUS_PIN);
+    gpio_set(IBUS_PORT, IBUS_PIN);
+
+    // full-duplex UART for GPS: GPS_TX = PA2, GPS_RX = PA3
+    gpio_set_mode(GPS_PORT, GPIO_MODE_OUTPUT_50_MHZ, GPIO_CNF_OUTPUT_ALTFN_PUSHPULL, GPSTX_PIN);
+    gpio_set_mode(GPS_PORT, GPIO_MODE_INPUT, GPIO_CNF_INPUT_FLOAT, GPSRX_PIN);
+
+    // i2c 1 module: SDA = PB7, SCL = PB6
+    gpio_set_mode(I2C_PORT, GPIO_MODE_OUTPUT_50_MHZ, GPIO_CNF_OUTPUT_ALTFN_OPENDRAIN, I2CSCL_PIN | I2CSDA_PIN);
+
+    // ADC for Battery measurment
+    gpio_set_mode(UBAT_PORT, GPIO_MODE_INPUT, GPIO_CNF_INPUT_ANALOG, UBAT_PIN);
 }
 
 static inline void spi_setup(void) {
     // enable SPI1 as slave (communication channel to the NanoPI)
     rcc_periph_clock_enable(RCC_SPI1);
-
-    // Configure GPIOA: SCK = PA5, MISO = PA6, MOSI = PA7, NSS = PA4
-    gpio_set_mode(GPIOA, GPIO_MODE_INPUT, GPIO_CNF_INPUT_FLOAT, GPIO4 | GPIO5 | GPIO7);
-    gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_50_MHZ, GPIO_CNF_OUTPUT_ALTFN_PUSHPULL, GPIO6);
 
     // reset peripherial
     spi_reset(SPI1);
@@ -81,7 +118,7 @@ static inline void spi_setup(void) {
     // set slave mode
     spi_set_slave_mode(SPI1);
 
-    // anble HW chip select
+    // enable HW chip select
     spi_disable_software_slave_management(SPI1);
 
     // enable unidirectional communication
@@ -90,15 +127,10 @@ static inline void spi_setup(void) {
     // enable SPI module
     spi_enable(SPI1);
 
+    //
+    //
     // enable SPI2 as master (for the 9-axis gyrro and the BMP)
     rcc_periph_clock_enable(RCC_SPI2);
-
-    // Configure GPIOB: SCK = PB13, MISO = PB14, MOSI = PB15
-    gpio_set_mode(GPIOB, GPIO_MODE_OUTPUT_50_MHZ, GPIO_CNF_OUTPUT_ALTFN_PUSHPULL, GPIO13 | GPIO15);
-    gpio_set_mode(GPIOB, GPIO_MODE_INPUT, GPIO_CNF_INPUT_FLOAT, GPIO14);
-
-    // We will be manually controlling the SS pin here, so set it as a normal output
-    gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_50_MHZ, GPIO_CNF_OUTPUT_PUSHPULL, GPIO8 | GPIO10);
 
     // SS is active low, so pull it high for now
     gpio_set(GPIOA, GPIO8 | GPIO10);
@@ -145,12 +177,36 @@ static inline void i2c_setup(void) {
     // enable peripherial clocks
     rcc_periph_clock_enable(RCC_I2C1);
 
+    i2c_reset(I2C1);
+
+    i2c_peripheral_disable(I2C1);
+
+    // APB1 is running at 36MHz
+    i2c_set_clock_frequency(I2C1, I2C_CR2_FREQ_36MHZ);
+    
+    // enable fast mode I2C
+    i2c_set_fast_mode(I2C1);
+	
+    // fclock for I2C is 36MHz APB2 -> cycle time 28ns, low time at 400kHz
+	// incl trise -> Thigh = 1600ns; CCR = tlow/tcycle = 0x1C,9;
+	// Datasheet suggests 0x1e.
+    i2c_set_ccr(I2C1, 0x1e);
+
+	// fclock for I2C is 36MHz -> cycle time 28ns, rise time for
+	// 400kHz => 300ns and 100kHz => 1000ns; 300ns/28ns = 10;
+	// Incremented by 1 -> 11.
+    i2c_set_trise(I2C1, 0x0b);
+
+    // set a slave address (only needed if we want to receive data from the NanoPI)
+    i2c_set_own_7bit_slave_address(I2C1, 0x32);
+
+    // enable the peripherial
+    i2c_peripheral_enable(I2C1);
 }
 
 static inline void tim_setup(void) {
     // enable peripherial clocks
     rcc_periph_clock_enable(RCC_TIM2);
-    rcc_periph_clock_enable(RCC_TIM3);
 
     timer_reset(TIM2);
 
@@ -161,24 +217,28 @@ static inline void tim_setup(void) {
     timer_enable_preload(TIM2);
     timer_continuous_mode(TIM2);
 
+    // 20 ms interval
     timer_set_period(TIM2, 20000);
 
-    timer_set_oc_value(TIM2, TIM_OC1, 1000);
+    // Connect Servo 1
+    timer_set_oc_mode(TIM2, TIM_OC3, TIM_OCM_PWM1);
+    timer_enable_oc_preload(TIM2, TIM_OC3);
+    timer_enable_oc_output(TIM2, TIM_OC3);
+    timer_set_oc_value(TIM2, TIM_OC3, 1000);
+
+    // connect Servo 2
+    timer_set_oc_mode(TIM2, TIM_OC2, TIM_OCM_PWM1);
+    timer_enable_oc_preload(TIM2, TIM_OC2);
+    timer_enable_oc_output(TIM2, TIM_OC2);
+    timer_set_oc_value(TIM2, TIM_OC2, 1000);
+
+    // connect Servo 3
+    timer_set_oc_mode(TIM2, TIM_OC4, TIM_OCM_PWM1);
+    timer_enable_oc_preload(TIM2, TIM_OC4);
+    timer_enable_oc_output(TIM2, TIM_OC4);
+    timer_set_oc_value(TIM2, TIM_OC4, 1000);
 
     timer_enable_counter(TIM2);
-
-    timer_enable_irq(TIM2, TIM_DIER_CC1IE);
-    timer_enable_irq(TIM2, TIM_DIER_UIE);
-}
-
-void tim2_isr(void) {
-    if(timer_get_flag(TIM2, TIM_SR_CC1IF)) {
-        //
-    } else if(timer_get_flag(TIM2, TIM_SR_UIF)) {
-        gpio_set(servo1.port, servo1.pin);
-        gpio_set(servo2.port, servo2.pin);
-        gpio_set(servo3.port, servo3.pin);
-    }
 }
 
 int main(void) {
