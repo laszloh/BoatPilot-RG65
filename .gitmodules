@@ -1,3 +1,6 @@
 [submodule "PCB/_library"]
 	path = PCB/_library
 	url = https://github.com/laszloh/kicad_library.git
+[submodule "Software/BoatPilot_Arduino/lib/IBusBM-mod"]
+	path = Software/BoatPilot_Arduino/lib/IBusBM-mod
+	url = https://github.com/laszloh/IBusBM.git
