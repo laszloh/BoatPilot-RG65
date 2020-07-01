@@ -29,7 +29,8 @@
 #include <SPI.h>
 #include <Servo.h>
 
-#include <TinyGPS++.h>
+//#include <TinyGPS++.h>
+#include <NMEAGPS.h>
 #include <IBusBM.h>
 #include <MadgwickAHRS.h>
 
@@ -44,7 +45,10 @@ IBusBM iBus;
 
 constexpr int gpsBaud = 9600;
 HardwareSerial Serial2(PA3, PA2);
-TinyGPSPlus tinyGps;
+NMEAGPS gps;
+gps_fix fix;
+
+//TinyGPSPlus tinyGps;
 
 SPIClass spiMaster(PB15, PB14, PB13);
 SPISettings masterSettings();
@@ -112,12 +116,6 @@ void loop() {
     roll = filter.getRoll();
     pitch = filter.getPitch();
     heading = filter.getYaw();
-    Serial.print("Orientation: ");
-    Serial.print(heading);
-    Serial.print(" ");
-    Serial.print(pitch);
-    Serial.print(" ");
-    Serial.println(roll);
 
     // increment previous time, so we keep proper pace
     microsPrevious = microsPrevious + microsPerReading;
@@ -125,8 +123,8 @@ void loop() {
 
   iBus.loop();
 
-  while(Serial2.available() > 0)
-    tinyGps.encode(Serial2.read());
+  while(gps.available(Serial2))
+    fix = gps.read();
 }
 
 float convertRawAcceleration(int aRaw) {
