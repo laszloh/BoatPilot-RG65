@@ -29,13 +29,11 @@
 #include <SPI.h>
 #include <Servo.h>
 
-//#include <TinyGPS++.h>
+#include <BMP280_DEV.h>
+#include <MPU9250.h>
 #include <NMEAGPS.h>
 #include <IBusBM.h>
 #include <MadgwickAHRS.h>
-
-static float convertRawAcceleration(int aRaw);
-static float convertRawGyro(int gRaw);
 
 constexpr int numServo = 3;
 constexpr int servoPin[numServo] = {PB11, PB3, PB10};
@@ -48,12 +46,13 @@ HardwareSerial Serial2(PA3, PA2);
 NMEAGPS gps;
 gps_fix fix;
 
-//TinyGPSPlus tinyGps;
-
 SPIClass spiMaster(PB15, PB14, PB13);
 SPISettings masterSettings();
 constexpr int csBmp280 = PA8;
 constexpr int csMpu9250 = PA10;
+
+BMP280_DEV bmp280(csBmp280, spiMaster);
+MPU9250 mpu9250(spiMaster, csMpu9250);
 
 Madgwick filter;
 constexpr int microsPerReading = 25;
@@ -74,11 +73,20 @@ void setup() {
 
   // enable the SPI2 as master
   spiMaster.begin();
-  pinMode(csBmp280, OUTPUT);
-  digitalWrite(csBmp280, HIGH);
 
-  pinMode(csMpu9250, OUTPUT);
-  digitalWrite(csMpu9250, HIGH);
+  bmp280.begin(SLEEP_MODE, OVERSAMPLING_X16, OVERSAMPLING_X2,
+    IIR_FILTER_4, TIME_STANDBY_125MS);
+  bmp280.startNormalConversion();
+
+  mpu9250.begin();
+  mpu9250.setAccelRange(MPU9250::ACCEL_RANGE_8G);
+  mpu9250.setGyroRange(MPU9250::GYRO_RANGE_500DPS);
+  mpu9250.setDlpfBandwidth(MPU9250::DLPF_BANDWIDTH_20HZ);
+  mpu9250.setSrd(19);
+
+  mpu9250.calibrateAccel();
+  mpu9250.calibrateGyro();
+  mpu9250.calibrateMag();
 
   // start the IMU and filter
   filter.begin(25);
@@ -87,8 +95,8 @@ void setup() {
 void loop() {
   static uint32_t microsPrevious;
 
-  int aix, aiy, aiz;
-  int gix, giy, giz;
+  int32_t temp;
+  uint32_t pres;
   float ax, ay, az;
   float gx, gy, gz;
   float roll, pitch, heading;
@@ -99,15 +107,13 @@ void loop() {
   if (microsNow - microsPrevious >= microsPerReading) {
 
     // read raw data from CurieIMU
-    aix = aiy = aiz = gix = giy = giz = 0x200;
-
-    // convert from raw data to gravity and degrees/second units
-    ax = convertRawAcceleration(aix);
-    ay = convertRawAcceleration(aiy);
-    az = convertRawAcceleration(aiz);
-    gx = convertRawGyro(gix);
-    gy = convertRawGyro(giy);
-    gz = convertRawGyro(giz);
+    mpu9250.readSensor();
+    ax = mpu9250.getAccelX_mss();
+    ay = mpu9250.getAccelY_mss();
+    az = mpu9250.getAccelZ_mss();
+    gx = mpu9250.getGyroX_rads();
+    gy = mpu9250.getGyroY_rads();
+    gz = mpu9250.getGyroZ_rads();
 
     // update the filter, which computes orientation
     filter.updateIMU(gx, gy, gz, ax, ay, az);
@@ -121,26 +127,10 @@ void loop() {
     microsPrevious = microsPrevious + microsPerReading;
   }
 
+  bmp280.getTempPres(temp, pres);
+
   iBus.loop();
 
   while(gps.available(Serial2))
     fix = gps.read();
-}
-
-float convertRawAcceleration(int aRaw) {
-  // since we are using 2G range
-  // -2g maps to a raw value of -32768
-  // +2g maps to a raw value of 32767
-  
-  float a = (aRaw * 2.0) / 32768.0;
-  return a;
-}
-
-float convertRawGyro(int gRaw) {
-  // since we are using 250 degrees/seconds range
-  // -250 maps to a raw value of -32768
-  // +250 maps to a raw value of 32767
-  
-  float g = (gRaw * 250.0) / 32768.0;
-  return g;
 }

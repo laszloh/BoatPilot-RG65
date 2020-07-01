@@ -4,3 +4,6 @@
 [submodule "Software/BoatPilot_Arduino/lib/IBusBM-mod"]
 	path = Software/BoatPilot_Arduino/lib/IBusBM-mod
 	url = https://github.com/laszloh/IBusBM.git
+[submodule "Software/BoatPilot_Arduino/lib/BMP280-dev"]
+	path = Software/BoatPilot_Arduino/lib/BMP280-dev
+	url = https://github.com/laszloh/BMP280_DEV.git
