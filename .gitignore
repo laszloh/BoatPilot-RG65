@@ -38,3 +38,4 @@
 # backup files
 *.*bak
 fp-info-cache
+*.FCStd1
