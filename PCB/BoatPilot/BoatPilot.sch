@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:BoatPilot-cache
 EELAYER 30 0
 EELAYER END
 $Descr A3 16535 11693
@@ -39,17 +38,6 @@ F 3 "" H 1800 1950 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Regulator_Linear:LM1117-3.3 U103
-U 1 1 5E71BAAB
-P 7850 1300
-F 0 "U103" H 7850 1542 50  0000 C CNN
-F 1 "LM1117-3.3" H 7850 1451 50  0000 C CNN
-F 2 "Package_TO_SOT_SMD:SOT-223-3_TabPin2" H 7850 1300 50  0001 C CNN
-F 3 "http://www.ti.com/lit/ds/symlink/lm1117.pdf" H 7850 1300 50  0001 C CNN
-	1    7850 1300
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:GND #PWR0137
 U 1 1 5E71D6D1
 P 7850 2000
@@ -60,8 +48,6 @@ F 3 "" H 7850 2000 50  0001 C CNN
 	1    7850 2000
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	7850 1600 7850 2000
 Wire Wire Line
 	8150 1300 8250 1300
 Wire Wire Line
@@ -2084,7 +2070,7 @@ Wire Wire Line
 Wire Wire Line
 	12950 1300 13200 1300
 Wire Wire Line
-	7250 1300 7550 1300
+	7250 1300 7500 1300
 Wire Wire Line
 	7250 1200 7250 1300
 $Comp
@@ -2120,7 +2106,7 @@ Wire Wire Line
 Connection ~ 12850 6800
 Connection ~ 12850 5850
 $Comp
-L Regulator_Switching:TPS563200 U104
+L SilentWorks:TPS563200-Regulator_Switching U104
 U 1 1 5EEE03E0
 P 5050 1400
 F 0 "U104" H 5050 1767 50  0000 C CNN
@@ -2632,4 +2618,33 @@ $EndComp
 Connection ~ 8450 1300
 Wire Wire Line
 	8450 1300 8600 1300
+Wire Wire Line
+	7850 1700 7850 1750
+Wire Wire Line
+	7550 1400 7500 1400
+Wire Wire Line
+	7500 1400 7500 1300
+Connection ~ 7500 1300
+Wire Wire Line
+	7500 1300 7550 1300
+Wire Wire Line
+	7850 1750 8100 1750
+Wire Wire Line
+	8100 1400 8050 1400
+Connection ~ 7850 1750
+Wire Wire Line
+	7850 1750 7850 2000
+Wire Wire Line
+	8100 1400 8100 1750
+$Comp
+L Regulator_Linear:TLV75733PDBV U103
+U 1 1 5F1705A4
+P 7850 1400
+F 0 "U103" H 7850 1742 50  0000 C CNN
+F 1 "TLV75733PDBV" H 7850 1651 50  0000 C CNN
+F 2 "Package_TO_SOT_SMD:SOT-23-5" H 7850 1725 50  0001 C CIN
+F 3 "https://www.ti.com/lit/ds/symlink/tlv757p.pdf" H 7850 1450 50  0001 C CNN
+	1    7850 1400
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
