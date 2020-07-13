@@ -1990,20 +1990,6 @@ F 3 "~" H 1000 10900 50  0001 C CNN
 $EndComp
 $Comp
 L Device:R_Small R?
-U 1 1 5EEDD31B
-P 4500 1400
-AR Path="/5E273F3B/5EEDD31B" Ref="R?"  Part="1" 
-AR Path="/5EEDD31B" Ref="R106"  Part="1" 
-AR Path="/5E753207/5EEDD31B" Ref="R?"  Part="1" 
-F 0 "R106" H 4430 1354 50  0000 R CNN
-F 1 "10k" H 4430 1445 50  0000 R CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 4430 1400 50  0001 C CNN
-F 3 "~" H 4500 1400 50  0001 C CNN
-	1    4500 1400
-	1    0    0    1   
-$EndComp
-$Comp
-L Device:R_Small R?
 U 1 1 5F09464C
 P 6300 1900
 AR Path="/5E273F3B/5F09464C" Ref="R?"  Part="1" 
@@ -2124,10 +2110,7 @@ F 3 "" H 5050 2000 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	4650 1500 4500 1500
-Connection ~ 4500 1300
-Wire Wire Line
-	4500 1300 4650 1300
+	4650 1500 4600 1500
 $Comp
 L Device:C_Small C104
 U 1 1 5EF209D3
@@ -2229,8 +2212,6 @@ Wire Wire Line
 Wire Wire Line
 	4200 1650 4200 1300
 Connection ~ 4200 1300
-Wire Wire Line
-	4200 1300 4500 1300
 Wire Wire Line
 	5050 2000 5050 1700
 $Comp
@@ -2795,4 +2776,11 @@ Wire Wire Line
 Connection ~ 6800 5550
 Wire Wire Line
 	6800 5550 7050 5550
+Wire Wire Line
+	4200 1300 4600 1300
+Wire Wire Line
+	4600 1500 4600 1300
+Connection ~ 4600 1300
+Wire Wire Line
+	4600 1300 4650 1300
 $EndSCHEMATC
