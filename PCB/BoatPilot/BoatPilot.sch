@@ -440,12 +440,12 @@ F 3 "" H 1800 8200 50  0001 C CNN
 	-1   0    0    -1  
 $EndComp
 Wire Wire Line
-	1800 5050 2400 5050
+	1800 5150 2400 5150
 Wire Wire Line
-	2400 5150 1800 5150
-Text Label 2400 5050 2    50   ~ 0
-SYS_SWDIO
+	2400 5050 1800 5050
 Text Label 2400 5150 2    50   ~ 0
+SYS_SWDIO
+Text Label 2400 5050 2    50   ~ 0
 SYS_SWCLK
 $Comp
 L power:GND #PWR0151
@@ -2207,10 +2207,10 @@ Wire Wire Line
 Connection ~ 10100 10300
 Wire Wire Line
 	10100 10300 10750 10300
-Text Label 8150 6150 0    50   ~ 0
+Text Label 10750 7050 2    50   ~ 0
 ~RFM69_IRQ
 Wire Wire Line
-	8750 6150 8150 6150
+	10150 7050 10750 7050
 Text Label 10750 6150 2    50   ~ 0
 ~CS_RFM69
 Wire Wire Line
@@ -2380,8 +2380,8 @@ F 3 "~" H 14450 5350 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	8750 6850 8150 6850
-Text Label 8150 6850 0    50   ~ 0
+	10150 6750 10750 6750
+Text Label 10750 6750 2    50   ~ 0
 VBUS_SENSE
 $Comp
 L Connector_Generic:Conn_01x03 J106
@@ -2532,20 +2532,20 @@ SERVO_OUT5
 Text Label 13550 7000 0    50   ~ 0
 SERVO_OUT6
 Wire Wire Line
-	10150 4650 10750 4650
-Text Label 10750 4650 2    50   ~ 0
+	10150 4950 10750 4950
+Text Label 10750 4950 2    50   ~ 0
 SERVO_OUT6
-Wire Wire Line
-	10150 4750 10750 4750
-Text Label 10750 4750 2    50   ~ 0
-SERVO_OUT5
 Wire Wire Line
 	10150 4850 10750 4850
 Text Label 10750 4850 2    50   ~ 0
+SERVO_OUT5
+Wire Wire Line
+	10150 4750 10750 4750
+Text Label 10750 4750 2    50   ~ 0
 SERVO_OUT4
 Wire Wire Line
-	10150 4950 10750 4950
-Text Label 10750 4950 2    50   ~ 0
+	10150 4650 10750 4650
+Text Label 10750 4650 2    50   ~ 0
 SERVO_OUT3
 $Comp
 L power:GND #PWR0126
@@ -3269,22 +3269,22 @@ $EndComp
 Wire Wire Line
 	9650 2250 9650 2300
 Wire Wire Line
-	8900 8850 8900 8800
+	8750 8850 8750 8800
 Wire Wire Line
-	9000 8850 8900 8850
+	8850 8850 8750 8850
 $Comp
 L power:+3.3VP #PWR0195
 U 1 1 607A57D9
-P 8900 8800
-F 0 "#PWR0195" H 9050 8750 50  0001 C CNN
-F 1 "+3.3VP" H 8920 8943 50  0000 C CNN
-F 2 "" H 8900 8800 50  0001 C CNN
-F 3 "" H 8900 8800 50  0001 C CNN
-	1    8900 8800
+P 8750 8800
+F 0 "#PWR0195" H 8900 8750 50  0001 C CNN
+F 1 "+3.3VP" H 8770 8943 50  0000 C CNN
+F 2 "" H 8750 8800 50  0001 C CNN
+F 3 "" H 8750 8800 50  0001 C CNN
+	1    8750 8800
 	-1   0    0    -1  
 $EndComp
 Wire Wire Line
-	9400 8850 9300 8850
+	9400 8850 9150 8850
 Connection ~ 9400 8850
 Text Label 10750 6650 2    50   ~ 0
 ~CS_FLASH
@@ -3525,32 +3525,6 @@ F 3 "" H 14450 8500 50  0001 C CNN
 	1    14450 8500
 	1    0    0    -1  
 $EndComp
-$Comp
-L Device:R_Small R120
-U 1 1 6197F25B
-P 7900 6500
-F 0 "R120" H 7841 6546 50  0000 R CNN
-F 1 "10k" H 7841 6455 50  0000 R CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" H 7900 6500 50  0001 C CNN
-F 3 "~" H 7900 6500 50  0001 C CNN
-	1    7900 6500
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+3V3 #PWR0161
-U 1 1 6197F261
-P 7900 6400
-F 0 "#PWR0161" H 7900 6250 50  0001 C CNN
-F 1 "+3V3" H 7915 6573 50  0000 C CNN
-F 2 "" H 7900 6400 50  0001 C CNN
-F 3 "" H 7900 6400 50  0001 C CNN
-	1    7900 6400
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	8750 6650 7900 6650
-Wire Wire Line
-	7900 6650 7900 6600
 Wire Wire Line
 	1600 1200 2050 1200
 Wire Wire Line
@@ -3724,15 +3698,15 @@ Wire Wire Line
 $Comp
 L Jumper:SolderJumper_2_Open JP?
 U 1 1 5F7E9893
-P 9150 8850
+P 9000 8850
 AR Path="/5E273F3B/5F7E9893" Ref="JP?"  Part="1" 
 AR Path="/5F7E9893" Ref="JP102"  Part="1" 
 AR Path="/5E753207/5F7E9893" Ref="JP?"  Part="1" 
-F 0 "JP102" H 9150 8717 50  0000 C CNN
-F 1 "RPI 3.3V" H 9150 8626 50  0000 C CNN
-F 2 "Jumper:SolderJumper-2_P1.3mm_Open_Pad1.0x1.5mm" V 9080 8850 50  0001 C CNN
-F 3 "~" H 9150 8850 50  0001 C CNN
-	1    9150 8850
+F 0 "JP102" H 9000 8717 50  0000 C CNN
+F 1 "RPI 3.3V" H 9000 8626 50  0000 C CNN
+F 2 "Jumper:SolderJumper-2_P1.3mm_Open_Pad1.0x1.5mm" V 8930 8850 50  0001 C CNN
+F 3 "~" H 9000 8850 50  0001 C CNN
+	1    9000 8850
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -3776,22 +3750,14 @@ Wire Wire Line
 	6150 10050 6250 10050
 Wire Wire Line
 	6250 10050 6250 10450
-Wire Wire Line
-	6150 9950 6650 9950
 Text Label 7400 9950 2    50   ~ 0
 SPI3_SCK
 Text Label 7400 10150 2    50   ~ 0
 SPI3_MISO
-Wire Wire Line
-	6150 10150 6750 10150
-Wire Wire Line
-	6150 9750 6550 9750
 Text Label 7400 9750 2    50   ~ 0
 SPI3_MOSI
 Text Label 7400 9650 2    50   ~ 0
 ~CS_SDCARD
-Wire Wire Line
-	6150 9650 6450 9650
 NoConn ~ 6150 9550
 NoConn ~ 6150 10250
 Wire Wire Line
@@ -3843,41 +3809,21 @@ Wire Wire Line
 	6750 8850 6750 9000
 Connection ~ 6650 8850
 Wire Wire Line
-	6450 9400 6450 9650
-Connection ~ 6450 9650
-Wire Wire Line
-	6450 9650 7400 9650
-Wire Wire Line
-	6550 9400 6550 9750
-Connection ~ 6550 9750
-Wire Wire Line
-	6550 9750 7400 9750
-Wire Wire Line
-	6650 9400 6650 9950
-Connection ~ 6650 9950
-Wire Wire Line
-	6650 9950 7400 9950
-Wire Wire Line
-	6750 9400 6750 10150
-Connection ~ 6750 10150
-Wire Wire Line
-	6750 10150 7400 10150
-Wire Wire Line
 	7600 7750 8750 7750
 Wire Wire Line
 	7400 7850 8750 7850
-Text Label 10750 7050 2    50   ~ 0
+Text Label 8150 6150 0    50   ~ 0
 ~CS_SDCARD
 Wire Wire Line
-	10150 7050 10750 7050
+	8750 6150 8150 6150
 Wire Wire Line
 	7600 7350 7600 7750
 Wire Wire Line
 	7400 7350 7400 7850
 NoConn ~ 8750 7650
 Wire Wire Line
-	10150 6750 10750 6750
-Text Label 10750 6750 2    50   ~ 0
+	8750 6850 8150 6850
+Text Label 8150 6850 0    50   ~ 0
 BMX160_INT1
 Wire Wire Line
 	10150 6850 10750 6850
@@ -3958,4 +3904,34 @@ Wire Wire Line
 Connection ~ 5800 5800
 Wire Wire Line
 	5850 6050 5850 6250
+Text Label 9200 8850 0    50   ~ 0
+RFM_SUP
+Wire Wire Line
+	6150 9650 6750 9650
+Wire Wire Line
+	6150 10150 6450 10150
+Wire Wire Line
+	6450 9400 6450 10150
+Connection ~ 6450 10150
+Wire Wire Line
+	6450 10150 7400 10150
+Wire Wire Line
+	6750 9400 6750 9650
+Connection ~ 6750 9650
+Wire Wire Line
+	6750 9650 7400 9650
+Wire Wire Line
+	6150 9950 6550 9950
+Wire Wire Line
+	6150 9750 6650 9750
+Wire Wire Line
+	6650 9400 6650 9750
+Connection ~ 6650 9750
+Wire Wire Line
+	6650 9750 7400 9750
+Wire Wire Line
+	6550 9400 6550 9950
+Connection ~ 6550 9950
+Wire Wire Line
+	6550 9950 7400 9950
 $EndSCHEMATC
