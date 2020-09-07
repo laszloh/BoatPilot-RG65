@@ -1356,7 +1356,7 @@ U 1 1 5F1DC0C6
 P 5800 1000
 F 0 "L101" V 6025 1000 50  0000 C CNN
 F 1 "XAL6030-332MEB" V 5934 1000 50  0000 C CNN
-F 2 "Inductor_SMD:L_Bourns-SRN6028" H 5800 1000 50  0001 C CNN
+F 2 "Inductor_SMD:L_Coilcraft_XAL60xx_6.36x6.56mm" H 5800 1000 50  0001 C CNN
 F 3 "~" H 5800 1000 50  0001 C CNN
 F 4 "" H 5800 1000 50  0001 C CNN "DNP"
 F 5 "SRN6028-3R3MCT-ND " H 5800 1000 50  0001 C CNN "Part Number"
@@ -2526,84 +2526,10 @@ Wire Wire Line
 	2250 10250 2250 10300
 Text Label 2800 10250 2    50   ~ 0
 VBUS_SENSE
-$Comp
-L Connector_Generic:Conn_01x03 J104
-U 1 1 5EE502E4
-P 14450 5350
-F 0 "J104" H 14530 5392 50  0000 L CNN
-F 1 "out 1" H 14530 5301 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 14450 5350 50  0001 C CNN
-F 3 "~" H 14450 5350 50  0001 C CNN
-F 4 "" H 14450 5350 50  0001 C CNN "DNP"
-F 5 "SAM12324-ND" H 14450 5350 50  0001 C CNN "Part Number"
-F 6 "DigiKey" H 14450 5350 50  0001 C CNN "Supplier"
-	1    14450 5350
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	8750 6350 8150 6350
 Text Label 8150 6350 0    50   ~ 0
 VBUS_SENSE
-$Comp
-L Connector_Generic:Conn_01x03 J106
-U 1 1 610E542D
-P 14450 5700
-F 0 "J106" H 14530 5742 50  0000 L CNN
-F 1 "out 2" H 14530 5651 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 14450 5700 50  0001 C CNN
-F 3 "~" H 14450 5700 50  0001 C CNN
-F 4 "yes" H 14450 5700 50  0001 C CNN "DNP"
-	1    14450 5700
-	1    0    0    -1  
-$EndComp
-$Comp
-L Connector_Generic:Conn_01x03 J107
-U 1 1 610E597D
-P 14450 6050
-F 0 "J107" H 14530 6092 50  0000 L CNN
-F 1 "out 3" H 14530 6001 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 14450 6050 50  0001 C CNN
-F 3 "~" H 14450 6050 50  0001 C CNN
-F 4 "yes" H 14450 6050 50  0001 C CNN "DNP"
-	1    14450 6050
-	1    0    0    -1  
-$EndComp
-$Comp
-L Connector_Generic:Conn_01x03 J109
-U 1 1 610E5E60
-P 14450 6400
-F 0 "J109" H 14530 6442 50  0000 L CNN
-F 1 "out 4" H 14530 6351 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 14450 6400 50  0001 C CNN
-F 3 "~" H 14450 6400 50  0001 C CNN
-F 4 "yes" H 14450 6400 50  0001 C CNN "DNP"
-	1    14450 6400
-	1    0    0    -1  
-$EndComp
-$Comp
-L Connector_Generic:Conn_01x03 J110
-U 1 1 610E61E1
-P 14450 6750
-F 0 "J110" H 14530 6792 50  0000 L CNN
-F 1 "out 5" H 14530 6701 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 14450 6750 50  0001 C CNN
-F 3 "~" H 14450 6750 50  0001 C CNN
-F 4 "yes" H 14450 6750 50  0001 C CNN "DNP"
-	1    14450 6750
-	1    0    0    -1  
-$EndComp
-$Comp
-L Connector_Generic:Conn_01x03 J111
-U 1 1 610E7178
-P 14450 7100
-F 0 "J111" H 14530 7142 50  0000 L CNN
-F 1 "out 6" H 14530 7051 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 14450 7100 50  0001 C CNN
-F 3 "~" H 14450 7100 50  0001 C CNN
-F 4 "yes" H 14450 7100 50  0001 C CNN "DNP"
-	1    14450 7100
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	14250 7100 14100 7100
 Wire Wire Line
@@ -2674,28 +2600,28 @@ Connection ~ 14200 7200
 Wire Wire Line
 	14200 7200 14200 7300
 Wire Wire Line
-	14250 5250 13550 5250
-Wire Wire Line
-	14250 5600 13550 5600
-Wire Wire Line
-	14250 5950 13550 5950
-Wire Wire Line
-	14250 6300 13550 6300
+	14250 7000 13550 7000
 Wire Wire Line
 	14250 6650 13550 6650
 Wire Wire Line
-	14250 7000 13550 7000
-Text Label 13550 5250 0    50   ~ 0
-SERVO_OUT1
-Text Label 13550 5600 0    50   ~ 0
-SERVO_OUT2
-Text Label 13550 5950 0    50   ~ 0
-SERVO_OUT3
-Text Label 13550 6300 0    50   ~ 0
-SERVO_OUT4
-Text Label 13550 6650 0    50   ~ 0
-SERVO_OUT5
+	14250 6300 13550 6300
+Wire Wire Line
+	14250 5950 13550 5950
+Wire Wire Line
+	14250 5600 13550 5600
+Wire Wire Line
+	14250 5250 13550 5250
 Text Label 13550 7000 0    50   ~ 0
+SERVO_OUT1
+Text Label 13550 6650 0    50   ~ 0
+SERVO_OUT2
+Text Label 13550 6300 0    50   ~ 0
+SERVO_OUT3
+Text Label 13550 5950 0    50   ~ 0
+SERVO_OUT4
+Text Label 13550 5600 0    50   ~ 0
+SERVO_OUT5
+Text Label 13550 5250 0    50   ~ 0
 SERVO_OUT6
 Wire Wire Line
 	10150 4950 10750 4950
@@ -4278,4 +4204,70 @@ F 3 "" H 4800 6150 50  0001 C CNN
 $EndComp
 NoConn ~ 5750 4350
 NoConn ~ 10150 6950
+$Comp
+L SilentWorks:Conn_03x06 J104
+U 1 1 5F6720A5
+P 14450 5350
+F 0 "J104" H 14530 5392 50  0000 L CNN
+F 1 "Servo out" H 14530 5301 50  0000 L CNN
+F 2 "SilentWorks:PinHeader_3x06_P2.54mm_Horizontal" H 14450 5350 50  0001 C CNN
+F 3 "~" H 14450 5350 50  0001 C CNN
+	1    14450 5350
+	1    0    0    -1  
+$EndComp
+$Comp
+L SilentWorks:Conn_03x06 J104
+U 2 1 5F674061
+P 14450 5700
+F 0 "J104" H 14530 5742 50  0000 L CNN
+F 1 "Servo out" H 14530 5651 50  0000 L CNN
+F 2 "SilentWorks:PinHeader_3x06_P2.54mm_Horizontal" H 14450 5700 50  0001 C CNN
+F 3 "~" H 14450 5700 50  0001 C CNN
+	2    14450 5700
+	1    0    0    -1  
+$EndComp
+$Comp
+L SilentWorks:Conn_03x06 J104
+U 3 1 5F674B8C
+P 14450 6050
+F 0 "J104" H 14530 6092 50  0000 L CNN
+F 1 "Servo out" H 14530 6001 50  0000 L CNN
+F 2 "SilentWorks:PinHeader_3x06_P2.54mm_Horizontal" H 14450 6050 50  0001 C CNN
+F 3 "~" H 14450 6050 50  0001 C CNN
+	3    14450 6050
+	1    0    0    -1  
+$EndComp
+$Comp
+L SilentWorks:Conn_03x06 J104
+U 4 1 5F6759CA
+P 14450 6400
+F 0 "J104" H 14530 6442 50  0000 L CNN
+F 1 "Servo out" H 14530 6351 50  0000 L CNN
+F 2 "SilentWorks:PinHeader_3x06_P2.54mm_Horizontal" H 14450 6400 50  0001 C CNN
+F 3 "~" H 14450 6400 50  0001 C CNN
+	4    14450 6400
+	1    0    0    -1  
+$EndComp
+$Comp
+L SilentWorks:Conn_03x06 J104
+U 5 1 5F676497
+P 14450 6750
+F 0 "J104" H 14530 6792 50  0000 L CNN
+F 1 "Servo out" H 14530 6701 50  0000 L CNN
+F 2 "SilentWorks:PinHeader_3x06_P2.54mm_Horizontal" H 14450 6750 50  0001 C CNN
+F 3 "~" H 14450 6750 50  0001 C CNN
+	5    14450 6750
+	1    0    0    -1  
+$EndComp
+$Comp
+L SilentWorks:Conn_03x06 J104
+U 6 1 5F677232
+P 14450 7100
+F 0 "J104" H 14530 7142 50  0000 L CNN
+F 1 "Servo out" H 14530 7051 50  0000 L CNN
+F 2 "SilentWorks:PinHeader_3x06_P2.54mm_Horizontal" H 14450 7100 50  0001 C CNN
+F 3 "~" H 14450 7100 50  0001 C CNN
+	6    14450 7100
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
