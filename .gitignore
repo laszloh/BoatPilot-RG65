@@ -35,8 +35,11 @@
 *.csv
 *.tsv
 *.xml
+*build/
+*.net
 # backup files
 *.*bak
 fp-info-cache
 git_hash.kicad_mod
+
 *.FCStd1
